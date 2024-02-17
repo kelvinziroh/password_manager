@@ -11,3 +11,9 @@ PASSWORDS = {
     'luggage': 'Fd,3<W"mebb!ZA!,r|6?)ytU!)',
 }
 
+# Alert user incase of invalid command line arguments
+if len(sys.argv) < 2:
+    print('Usage: python password_manager.py [account] - copy account password')
+    sys.exit()
+
+
