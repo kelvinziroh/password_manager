@@ -30,7 +30,10 @@ parser.add_argument(
     action='store_true',
     help='Delete an existing password in the password manager'
 )
-# Create different commands for different use cases
+
+# Parse the arguments
+args = parser.parse_args()
+
 # Prompt the user for account name and password
 # Add account and password if account doesn't exist
 # Copy password if account name exists in stored passwords
