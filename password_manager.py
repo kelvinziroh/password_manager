@@ -4,6 +4,11 @@
 # Import necessary modules
 import sys, pyperclip, argparse
 
+# Create an argument parser
+parser = argparse.ArgumentParser(
+    description='Manage passwords for different accounts'
+)
+
 # Create different commands for different use cases
 # Prompt the user for account name and password
 # Add account and password if account doesn't exist
