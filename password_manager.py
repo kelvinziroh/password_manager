@@ -38,7 +38,14 @@ def get_arguments():
         action='store_true',
         help='Delete an existing password in the password manager'
     )
-    
+
+    # Argument to copy password in the manager
+    parser.add_argument(
+        '--get-password',
+        action='store_true',
+        help='Copy the password for the corresponding account in the manager'
+    )
+
     return parser.parse_args()
 
 # Parse the arguments
