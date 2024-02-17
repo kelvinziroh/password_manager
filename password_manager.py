@@ -17,6 +17,12 @@ parser.add_argument(
     help='Add a new password to the password manager'
 )
 
+# Argument to edit password in the manager
+parser.add_argument(
+    '--edit-password',
+    action='store_true',
+    help='Edit an existing password in the password manager'
+)
 # Create different commands for different use cases
 # Prompt the user for account name and password
 # Add account and password if account doesn't exist
