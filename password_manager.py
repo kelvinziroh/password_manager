@@ -42,8 +42,14 @@ def add_password(account_name, password):
     else:
         PASSWORDS[account_name] = password
 
-def edit_password():
-    ...
+# Edit account in the password manager if it exists
+def edit_password(account_name, password):
+    if account_name in PASSWORDS:
+        PASSWORDS[account_name] = password
+    else:
+        print(
+            f'{account_name} does not exist in the password manager.'
+        )
 
 def del_password():
     ...
