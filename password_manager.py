@@ -5,34 +5,37 @@
 import sys, pyperclip, argparse
 
 # Create an argument parser
-parser = argparse.ArgumentParser(
-    description='Manage passwords for different accounts'
-)
+def get_arguments():
+    parser = argparse.ArgumentParser(
+        description='Manage passwords for different accounts'
+    )
 
-# Add argument to the parser
-# Argument to add password to the manager
-parser.add_argument(
-    '--add-password',
-    action='store_true',
-    help='Add a new password to the password manager'
-)
+    # Add argument to the parser
+    # Argument to add password to the manager
+    parser.add_argument(
+        '--add-password',
+        action='store_true',
+        help='Add a new password to the password manager'
+    )
 
-# Argument to edit password in the manager
-parser.add_argument(
-    '--edit-password',
-    action='store_true',
-    help='Edit an existing password in the password manager'
-)
+    # Argument to edit password in the manager
+    parser.add_argument(
+        '--edit-password',
+        action='store_true',
+        help='Edit an existing password in the password manager'
+    )
 
-# Argument to delete an existing password in the manager
-parser.add_argument(
-    '--del-password',
-    action='store_true',
-    help='Delete an existing password in the password manager'
-)
+    # Argument to delete an existing password in the manager
+    parser.add_argument(
+        '--del-password',
+        action='store_true',
+        help='Delete an existing password in the password manager'
+    )
+    
+    return parser.parse_args()
 
 # Parse the arguments
-args = parser.parse_args()
+args = get_arguments()
 
 # Add account to the password manager if it does not exist
 def add_password(account_name, password):
@@ -58,9 +61,6 @@ def del_password(account_name):
         print(
             f'{account_name} does not exist in the password manager.'
         )
-# Prompt the user for account name and password
-# Add account and password if account doesn't exist
-# Copy password if account name exists in stored passwords
 
 # Store the passords for various accounts
 PASSWORDS = {
