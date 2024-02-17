@@ -51,8 +51,13 @@ def edit_password(account_name, password):
             f'{account_name} does not exist in the password manager.'
         )
 
-def del_password():
-    ...
+def del_password(account_name):
+    if account_name in PASSWORDS:
+        del PASSWORDS[account_name]
+    else:
+        print(
+            f'{account_name} does not exist in the password manager.'
+        )
 # Prompt the user for account name and password
 # Add account and password if account doesn't exist
 # Copy password if account name exists in stored passwords
