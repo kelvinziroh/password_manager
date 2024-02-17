@@ -1,6 +1,9 @@
 #! python3
 # password_manager.py - An insecure password manager program
 
+# Import necessary modules
+import sys
+
 # Store the passords for various accounts
 PASSWORDS = {
     'email': ']"~9!k3-L.Lgj22)cMtp"`m/N3',
