@@ -63,9 +63,11 @@ def edit_password(account_name, password):
             f'{account_name} does not exist in the password manager.'
         )
 
+# Delete account in the password manager if it exists
 def del_password(account_name):
     if account_name in PASSWORDS:
         del PASSWORDS[account_name]
+        print(f'Credentials for {account_name} successfully deleted!')
     else:
         print(
             f'{account_name} does not exist in the password manager.'
@@ -82,6 +84,13 @@ if args.edit_password:
     account = input('Account name: ')
     password = input('Password: ')
     edit_password(account, password)
+
+# Prompt user for account name if del password argument has been used
+if args.del_password:
+    warning_message = 'WARNING: You are about to permanently delete a record!'
+    print(warning_message.center(len(warning_message) + 20, '-'))
+    account = input('Account name: ')
+    del_password(account)
 
 
 # Alert user incase of invalid command line arguments
