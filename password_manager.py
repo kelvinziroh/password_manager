@@ -4,6 +4,13 @@
 # Import necessary modules
 import sys, pyperclip, argparse
 
+# Store the passords for various accounts
+PASSWORDS = {
+    'email': ']"~9!k3-L.Lgj22)cMtp"`m/N3',
+    'blog': 'j9J&-?FVk[jR;epaBpu&5$K7G#',
+    'luggage': 'Fd,3<W"mebb!ZA!,r|6?)ytU!)',
+}
+
 # Create an argument parser
 def get_arguments():
     parser = argparse.ArgumentParser(
@@ -41,9 +48,10 @@ args = get_arguments()
 def add_password(account_name, password):
     if account_name in PASSWORDS:
         print(
-            f'{account_name} exists in the password manager.')
+            f'{account_name} already exists in the password manager.')
     else:
         PASSWORDS[account_name] = password
+        print(f'Password for {account_name} successfully added!')
 
 # Edit account in the password manager if it exists
 def edit_password(account_name, password):
@@ -62,12 +70,12 @@ def del_password(account_name):
             f'{account_name} does not exist in the password manager.'
         )
 
-# Store the passords for various accounts
-PASSWORDS = {
-    'email': ']"~9!k3-L.Lgj22)cMtp"`m/N3',
-    'blog': 'j9J&-?FVk[jR;epaBpu&5$K7G#',
-    'luggage': 'Fd,3<W"mebb!ZA!,r|6?)ytU!)',
-}
+# Prompt user for account credentials if add password argument has been used
+if args.add_password:
+    account = input('Account Name: ')
+    password = input('Password: ')
+    add_password(account, password)
+
 
 # Alert user incase of invalid command line arguments
 if len(sys.argv) < 2:
