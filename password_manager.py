@@ -2,7 +2,12 @@
 # password_manager.py - An insecure password manager program
 
 # Import necessary modules
-import sys, pyperclip
+import sys, pyperclip, argparse
+
+# Create different commands for different use cases
+# Prompt the user for account name and password
+# Add account and password if account doesn't exist
+# Copy password if account name exists in stored passwords
 
 # Store the passords for various accounts
 PASSWORDS = {
