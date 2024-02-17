@@ -34,6 +34,19 @@ parser.add_argument(
 # Parse the arguments
 args = parser.parse_args()
 
+# Add account to the password manager if it does not exist
+def add_password(account_name, password):
+    if account_name in PASSWORDS:
+        print(
+            f'{account_name} exists in the password manager.')
+    else:
+        PASSWORDS[account_name] = password
+
+def edit_password():
+    ...
+
+def del_password():
+    ...
 # Prompt the user for account name and password
 # Add account and password if account doesn't exist
 # Copy password if account name exists in stored passwords
