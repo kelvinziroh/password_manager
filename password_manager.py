@@ -16,4 +16,6 @@ if len(sys.argv) < 2:
     print('Usage: python password_manager.py [account] - copy account password')
     sys.exit()
 
+# Get the account name
+account = sys.argv[1]
 
