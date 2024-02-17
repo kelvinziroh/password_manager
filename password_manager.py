@@ -80,6 +80,14 @@ def del_password(account_name):
             f'{account_name} does not exist in the password manager.'
         )
 
+# Copy account's password if it exists in the password manager
+def get_password(account_name):
+    if account_name in PASSWORDS:
+        pyperclip.copy(PASSWORDS[account_name])
+        print(f'Password for {account_name} copied to clipboard!')
+    else:
+        print(f'{account_name} does not exist in the password manager.')
+
 # Prompt user for account credentials if add password argument has been used
 if args.add_password:
     account = input('Account Name: ')
