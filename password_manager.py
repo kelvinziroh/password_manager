@@ -2,7 +2,7 @@
 # password_manager.py - An insecure password manager program
 
 # Import necessary modules
-import sys
+import sys, pyperclip
 
 # Store the passords for various accounts
 PASSWORDS = {
