@@ -19,3 +19,9 @@ if len(sys.argv) < 2:
 # Get the account name
 account = sys.argv[1]
 
+# Copy password if account name exists in stored passwords
+if account in PASSWORDS:
+    pyperclip.copy(PASSWORDS[account])
+    print(f'password for {account} copied to clipboard.')
+else:
+    print(f'There is no account named {account}.')
