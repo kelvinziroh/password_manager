@@ -9,6 +9,14 @@ parser = argparse.ArgumentParser(
     description='Manage passwords for different accounts'
 )
 
+# Add argument to the parser
+# Argument to add password to the manager
+parser.add_argument(
+    '--add-password',
+    action='store_true',
+    help='Add a new password to the password manager'
+)
+
 # Create different commands for different use cases
 # Prompt the user for account name and password
 # Add account and password if account doesn't exist
