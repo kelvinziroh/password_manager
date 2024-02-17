@@ -57,6 +57,7 @@ def add_password(account_name, password):
 def edit_password(account_name, password):
     if account_name in PASSWORDS:
         PASSWORDS[account_name] = password
+        print(f'Password for {account_name} successfuly updated!')
     else:
         print(
             f'{account_name} does not exist in the password manager.'
@@ -75,6 +76,12 @@ if args.add_password:
     account = input('Account Name: ')
     password = input('Password: ')
     add_password(account, password)
+
+# Prompt user for updated credentials if edit password argument has been used
+if args.edit_password:
+    account = input('Account name: ')
+    password = input('Password: ')
+    edit_password(account, password)
 
 
 # Alert user incase of invalid command line arguments
