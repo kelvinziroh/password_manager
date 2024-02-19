@@ -4,13 +4,16 @@
 # Import necessary modules
 import sys, pyperclip, argparse, ast
 
-# Get the file object and open it
-password_file = open("stored_passwords.txt")
+def read_from_file(file_name):
+    # Get the file object and open it
+    password_file = open(file_name)
 
-# Read the contents of the file object
-# Convert dictionary string to dictionary object
-PASSWORDS = ast.literal_eval(password_file.read())
+    # Read the contents of the file object
+    # Convert dictionary string to dictionary object
+    return ast.literal_eval(password_file.read())
 
+# Get passwords from password file
+PASSWORDS = read_from_file('stored_passwords.txt')
 
 # Create an argument parser
 def get_arguments():
