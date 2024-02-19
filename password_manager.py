@@ -60,6 +60,13 @@ def add_password(account_name, password):
         print(f"{account_name} already exists in the password manager.")
     else:
         PASSWORDS[account_name] = password
+
+        # Overwrite password file contents
+        stored_passwords = open("stored_passwords.txt", "w")
+        stored_passwords.write(str(PASSWORDS))
+        stored_passwords.close()
+
+        # Alert user that password has successfully been added
         print(f"Password for {account_name} successfully added!")
 
 
