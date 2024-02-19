@@ -2,23 +2,14 @@
 # password_manager.py - An insecure password manager program
 
 # Import necessary modules
-import sys, pyperclip, argparse
+import sys, pyperclip, argparse, ast
 
 # Get the file object and open it
-password_file = open('stored_passwords.txt')
+password_file = open("stored_passwords.txt")
 
 # Read the contents of the file object
-PASSWORDS = password_file.read()
-# Store the passords for various accounts
-# PASSWORDS = {
-#     "email": ']"~9!k3-L.Lgj22)cMtp"`m/N3',
-#     "blog": "j9J&-?FVk[jR;epaBpu&5$K7G#",
-#     "luggage": 'Fd,3<W"mebb!ZA!,r|6?)ytU!)',
-# }
-
-# Check what the PASSWORDS variable prints out
-print(PASSWORDS)
-print(type(PASSWORDS))
+# Convert dictionary string to dictionary object
+PASSWORDS = ast.literal_eval(password_file.read())
 
 
 # Create an argument parser
