@@ -2,7 +2,7 @@
 # password_manager.py - An insecure password manager program
 
 # Import necessary modules
-import sys, pyperclip, argparse, ast
+import sys, pyperclip, argparse, ast, string, random
 
 
 def read_from_file(file_name):
@@ -67,6 +67,14 @@ def get_arguments():
 args = get_arguments()
 
 
+# Generate random passwords
+def generate_password(password_length):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    # Randomly select characters to construct the password
+    password = ''.join(random.choice(characters) for _ in range(password_length))
+    return password
+
+
 # Add account to the password manager if it does not exist
 def add_password(account_name, password):
     if account_name in PASSWORDS:
@@ -125,14 +133,16 @@ if len(sys.argv) < 2:
 
 # Prompt user for account credentials if add password argument has been used
 if args.add_password:
-    account = input("Account Name: ")
-    password = input("Password: ")
+    account = input("Account name: ")
+    password_length = int(input("Password length: "))
+    password = generate_password(password_length)
     add_password(account, password)
 
 # Prompt user for updated credentials if edit password argument has been used
 if args.edit_password:
     account = input("Account name: ")
-    password = input("Password: ")
+    password_length = int(input("Password length: "))
+    password = generate_password(password_length)
     edit_password(account, password)
 
 # Prompt user for account name if del password argument has been used
