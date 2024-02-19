@@ -4,6 +4,7 @@
 # Import necessary modules
 import sys, pyperclip, argparse, ast
 
+
 def read_from_file(file_name):
     # Get the file object and open it
     password_file = open(file_name)
@@ -12,8 +13,17 @@ def read_from_file(file_name):
     # Convert dictionary string to dictionary object
     return ast.literal_eval(password_file.read())
 
+
+def write_to_file(file_name, passwords_dict):
+    # Overwrite password file contents
+    stored_passwords = open(file_name, "w")
+    stored_passwords.write(str(passwords_dict))
+    stored_passwords.close()
+
+
 # Get passwords from password file
-PASSWORDS = read_from_file('stored_passwords.txt')
+PASSWORDS = read_from_file("stored_passwords.txt")
+
 
 # Create an argument parser
 def get_arguments():
@@ -65,9 +75,7 @@ def add_password(account_name, password):
         PASSWORDS[account_name] = password
 
         # Overwrite password file contents
-        stored_passwords = open("stored_passwords.txt", "w")
-        stored_passwords.write(str(PASSWORDS))
-        stored_passwords.close()
+        write_to_file("stored_passwords.txt", PASSWORDS)
 
         # Alert user that password has successfully been added
         print(f"Password for {account_name} successfully added!")
@@ -79,9 +87,7 @@ def edit_password(account_name, password):
         PASSWORDS[account_name] = password
 
         # Overwrite password file contents
-        stored_passwords = open("stored_passwords.txt", "w")
-        stored_passwords.write(str(PASSWORDS))
-        stored_passwords.close()
+        write_to_file("stored_passwords.txt", PASSWORDS)
 
         # Alert user that password has successfully been updated
         print(f"Password for {account_name} successfuly updated!")
@@ -95,9 +101,7 @@ def del_password(account_name):
         del PASSWORDS[account_name]
 
         # Overwrite password file contents
-        stored_passwords = open("stored_passwords.txt", "w")
-        stored_passwords.write(str(PASSWORDS))
-        stored_passwords.close()
+        write_to_file("stored_passwords.txt", PASSWORDS)
 
         # Alert user that password has successfully been deleted
         print(f"Credentials for {account_name} successfully deleted!")
