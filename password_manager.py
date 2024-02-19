@@ -90,6 +90,13 @@ def edit_password(account_name, password):
 def del_password(account_name):
     if account_name in PASSWORDS:
         del PASSWORDS[account_name]
+
+        # Overwrite password file contents
+        stored_passwords = open("stored_passwords.txt", "w")
+        stored_passwords.write(str(PASSWORDS))
+        stored_passwords.close()
+
+        # Alert user that password has successfully been deleted
         print(f"Credentials for {account_name} successfully deleted!")
     else:
         print(f"{account_name} does not exist in the password manager.")
