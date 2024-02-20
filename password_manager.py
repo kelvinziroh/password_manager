@@ -21,10 +21,6 @@ def write_to_file(file_name, passwords_dict):
     stored_passwords.close()
 
 
-# Get passwords from password file
-PASSWORDS = read_from_file("stored_passwords.txt")
-
-
 # Create an argument parser
 def get_arguments():
     parser = argparse.ArgumentParser(
@@ -63,20 +59,19 @@ def get_arguments():
     return parser.parse_args()
 
 
-# Parse the arguments
-args = get_arguments()
-
-
 # Generate random passwords
 def generate_password(password_length):
     characters = string.ascii_letters + string.digits + string.punctuation
     # Randomly select characters to construct the password
-    password = ''.join(random.choice(characters) for _ in range(password_length))
+    password = "".join(random.choice(characters) for _ in range(password_length))
     return password
 
 
 # Add account to the password manager if it does not exist
 def add_password(account_name, password):
+    # Get passwords from password file
+    PASSWORDS = read_from_file("stored_passwords.txt")
+
     if account_name in PASSWORDS:
         print(f"{account_name} already exists in the password manager.")
     else:
@@ -91,6 +86,8 @@ def add_password(account_name, password):
 
 # Edit account in the password manager if it exists
 def edit_password(account_name, password):
+    # Get passwords from password file
+    PASSWORDS = read_from_file("stored_passwords.txt")
     if account_name in PASSWORDS:
         PASSWORDS[account_name] = password
 
@@ -105,6 +102,8 @@ def edit_password(account_name, password):
 
 # Delete account in the password manager if it exists
 def del_password(account_name):
+    # Get passwords from password file
+    PASSWORDS = read_from_file("stored_passwords.txt")
     if account_name in PASSWORDS:
         del PASSWORDS[account_name]
 
@@ -119,6 +118,8 @@ def del_password(account_name):
 
 # Copy account's password if it exists in the password manager
 def get_password(account_name):
+    # Get passwords from password file
+    PASSWORDS = read_from_file("stored_passwords.txt")
     if account_name in PASSWORDS:
         pyperclip.copy(PASSWORDS[account_name])
         print(f"Password for {account_name} copied to clipboard!")
@@ -126,33 +127,41 @@ def get_password(account_name):
         print(f"{account_name} does not exist in the password manager.")
 
 
-# Alert user incase of invalid command line arguments
-if len(sys.argv) < 2:
-    print("Usage: python password_manager.py [account] - copy account password")
-    sys.exit()
+def main():
+    # Parse the arguments
+    args = get_arguments()
 
-# Prompt user for account credentials if add password argument has been used
-if args.add_password:
-    account = input("Account name: ")
-    password_length = int(input("Password length: "))
-    password = generate_password(password_length)
-    add_password(account, password)
+    # Alert user incase of invalid command line arguments
+    if len(sys.argv) < 2:
+        print("Usage: python password_manager.py [account] - copy account password")
+        sys.exit()
 
-# Prompt user for updated credentials if edit password argument has been used
-if args.edit_password:
-    account = input("Account name: ")
-    password_length = int(input("Password length: "))
-    password = generate_password(password_length)
-    edit_password(account, password)
+    # Prompt user for account credentials if add password argument has been used
+    if args.add_password:
+        account = input("Account name: ")
+        password_length = int(input("Password length: "))
+        password = generate_password(password_length)
+        add_password(account, password)
 
-# Prompt user for account name if del password argument has been used
-if args.del_password:
-    warning_message = "WARNING: You are about to permanently delete a record!"
-    print(warning_message.center(len(warning_message) + 20, "-"))
-    account = input("Account name: ")
-    del_password(account)
+    # Prompt user for updated credentials if edit password argument has been used
+    if args.edit_password:
+        account = input("Account name: ")
+        password_length = int(input("Password length: "))
+        password = generate_password(password_length)
+        edit_password(account, password)
 
-# Prompt user for account name if get password argument has been used
-if args.get_password:
-    account = input("Account name: ")
-    get_password(account)
+    # Prompt user for account name if del password argument has been used
+    if args.del_password:
+        warning_message = "WARNING: You are about to permanently delete a record!"
+        print(warning_message.center(len(warning_message) + 20, "-"))
+        account = input("Account name: ")
+        del_password(account)
+
+    # Prompt user for account name if get password argument has been used
+    if args.get_password:
+        account = input("Account name: ")
+        get_password(account)
+
+
+if __name__ == "__main__":
+    main()
