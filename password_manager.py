@@ -6,12 +6,22 @@ import sys, pyperclip, argparse, ast, string, random
 
 
 def read_from_file(file_name):
-    # Get the file object and open it
-    password_file = open(file_name)
+    try:
+        # Get the file object and open it
+        password_file = open(file_name)
 
-    # Read the contents of the file object
-    # Convert dictionary string to dictionary object
-    return ast.literal_eval(password_file.read())
+        # Read the contents of the file object
+        # Convert dictionary string to dictionary object
+        return ast.literal_eval(password_file.read())
+    except FileNotFoundError:
+        # Create the file if it does not exist
+        password_file = open(file_name, "w")
+        password_file.write('{}')
+        password_file.close()
+        
+        # Read the contents of the newly created file
+        password_file = open(file_name)
+        return ast.literal_eval(password_file.read())
 
 
 def write_to_file(file_name, passwords_dict):
