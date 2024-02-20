@@ -1,5 +1,5 @@
 #! python3
-# password_manager.py - An insecure password manager program
+# password_manager.py - A local command-line based password manager program
 
 # Import necessary modules
 import sys, pyperclip, argparse, ast, string, random
@@ -143,7 +143,7 @@ def main():
 
     # Alert user incase of invalid command line arguments
     if len(sys.argv) < 2:
-        print("Usage: python password_manager.py [account] - copy account password")
+        print("Usage: python password_manager.py [--option] - Generate, add, edit and delete passwords to accounts")
         sys.exit()
 
     # Prompt user for account credentials if add password argument has been used
