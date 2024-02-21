@@ -3,8 +3,8 @@ Create or store, edit, delete and easily retrieve passwords to accounts from a l
 interface.
 
 ## Requirements
-python v3 or later
-pyperclip v1.8.2
+- python v3 or later
+- pyperclip v1.8.2
 
 ## How it works
 The program is implemented in python and has four main functionalities:
