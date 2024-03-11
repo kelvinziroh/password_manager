@@ -16,9 +16,9 @@ def read_from_file(file_name):
     except FileNotFoundError:
         # Create the file if it does not exist
         password_file = open(file_name, "w")
-        password_file.write('{}')
+        password_file.write("{}")
         password_file.close()
-        
+
         # Read the contents of the newly created file
         password_file = open(file_name)
         return ast.literal_eval(password_file.read())
@@ -121,7 +121,7 @@ def del_password(account_name):
         write_to_file("stored_passwords.txt", PASSWORDS)
 
         # Alert user that password has successfully been deleted
-        print(f"Credentials for {account_name} successfully deleted!")
+        print(f"Credentials for {account_name} successfully deleted!\n")
     else:
         print(f"{account_name} does not exist in the password manager.")
 
@@ -137,25 +137,44 @@ def get_password(account_name):
         print(f"{account_name} does not exist in the password manager.")
 
 
+# Display the account names in the stored passwords file
+def display_accounts():
+    # Display a message
+    message = "Stored Account passwords"
+    print("=" * (len(message) + 20))
+    print(message.center(len(message) + 20))
+    print("=" * (len(message) + 20))
+    # Get passwords from the password file
+    PASSWORDS = read_from_file("stored_passwords.txt")
+    for account in PASSWORDS.keys():
+        print(f"- {account}")
+
+
 def main():
     # Parse the arguments
     args = get_arguments()
 
     # Alert user incase of invalid command line arguments
     if len(sys.argv) < 2:
-        print("Usage: python password_manager.py [--option] - Generate, add, edit and delete passwords to accounts")
+        print(
+            "Usage: python password_manager.py [--option] - Generate, add, edit and delete passwords to accounts"
+        )
         sys.exit()
 
     # Prompt user for account credentials if add password argument has been used
     if args.add_password:
-        account = input("Account name: ")
+        # Display the accounts available in the stored passwords
+        display_accounts()
+        account = input("\nAccount name: ")
         password_length = int(input("Password length: "))
         password = generate_password(password_length)
         add_password(account, password)
 
     # Prompt user for updated credentials if edit password argument has been used
     if args.edit_password:
-        account = input("Account name: ")
+        # Display the accounts available in the stored passwords
+        display_accounts()
+        account = input("\nAccount name: ")
         password_length = int(input("Password length: "))
         password = generate_password(password_length)
         edit_password(account, password)
@@ -163,13 +182,18 @@ def main():
     # Prompt user for account name if del password argument has been used
     if args.del_password:
         warning_message = "WARNING: You are about to permanently delete a record!"
-        print(warning_message.center(len(warning_message) + 20, "-"))
+        # Display the accounts available in the stored passwords
+        display_accounts()
+        print(f"\n{warning_message}")
         account = input("Account name: ")
         del_password(account)
+        display_accounts()
 
     # Prompt user for account name if get password argument has been used
     if args.get_password:
-        account = input("Account name: ")
+        # Display the accounts available in the stored passwords
+        display_accounts()
+        account = input("\nAccount name: ")
         get_password(account)
 
 
