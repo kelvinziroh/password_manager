@@ -2,7 +2,7 @@
 # password_manager.py - A local command-line based password manager program
 
 # Import necessary modules
-import sys, pyperclip, argparse, ast, string, random
+import sys, pyperclip, argparse, ast, string, random, shelve
 
 
 def read_from_file(file_name):
