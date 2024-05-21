@@ -5,6 +5,8 @@
 import sys, pyperclip, argparse, ast, string, random, shelve
 
 
+# TODO: Switch from a plaintext file to a shelf file to persist the password data
+
 def read_from_file(file_name):
     try:
         # Get the file object and open it
