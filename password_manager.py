@@ -25,13 +25,41 @@ def read_from_file(file_name):
         password_file = open(file_name)
         return ast.literal_eval(password_file.read())
 
+# def read_from_shelf(file_name):
+#     try:
+#         # Open the shelf file object
+#         password_file = shelve.open(file_name)
+#         # Get the passwords dictionary data
+#         password_dict = password_file['passwords']
+#         # close the shelf file
+#         password_file.close()
+#         # Return the password dictionary
+#         return password_dict
+#     except KeyError:
+#         # Create an empty dictionary
+#         new_dict = {}
+#         # Open the shelf file object
+#         password_file = shelve.open(file_name)
+#         # Assisgn the empty dictionary to the password file
+#         password_file['passwords'] = new_dict
+#         # Get the passwords dictionary data
+#         password_dict = password_file['passwords']
+#         # Close the shelf file
+#         password_file.close()
+#         # Return the password dictionary
+#         return password_dict
 
-def write_to_file(file_name, passwords_dict):
-    # Overwrite password file contents
-    stored_passwords = open(file_name, "w")
-    stored_passwords.write(str(passwords_dict))
+# def write_to_file(file_name, passwords_dict):
+#     # Overwrite password file contents
+#     stored_passwords = open(file_name, "w")
+#     stored_passwords.write(str(passwords_dict))
+#     stored_passwords.close()
+
+def write_to_shelf(file_name, passwords_dict):
+    # retrieve passwords from the shelf file
+    stored_passwords = shelve.open(file_name)
+    stored_passwords['passwords'] = passwords_dict
     stored_passwords.close()
-
 
 # Create an argument parser
 def get_arguments():
@@ -80,21 +108,30 @@ def generate_password(password_length):
 
 
 # Add account to the password manager if it does not exist
+# def add_password(account_name, password):
+#     # Get passwords from password file
+#     PASSWORDS = read_from_file("stored_passwords.txt")
+
+#     if account_name in PASSWORDS:
+#         print(f"{account_name} already exists in the password manager.")
+#     else:
+#         PASSWORDS[account_name] = password
+
+#         # Overwrite password file contents
+#         write_to_file("stored_passwords.txt", PASSWORDS)
+
+#         # Alert user that password has successfully been added
+#         print(f"Password for {account_name} successfully added!")
+
 def add_password(account_name, password):
-    # Get passwords from password file
-    PASSWORDS = read_from_file("stored_passwords.txt")
+    # Specify the data to be persisted
+    PASSWORDS = {account_name: password}
 
-    if account_name in PASSWORDS:
-        print(f"{account_name} already exists in the password manager.")
-    else:
-        PASSWORDS[account_name] = password
+    # persist the data to the shelf file
+    write_to_file('stored_passwords', PASSWORDS)
 
-        # Overwrite password file contents
-        write_to_file("stored_passwords.txt", PASSWORDS)
-
-        # Alert user that password has successfully been added
-        print(f"Password for {account_name} successfully added!")
-
+    # Alert user of successful password addition
+    print(f"Password for {account_name} successfully added!")
 
 # Edit account in the password manager if it exists
 def edit_password(account_name, password):
@@ -131,7 +168,7 @@ def del_password(account_name):
 # Copy account's password if it exists in the password manager
 def get_password(account_name):
     # Get passwords from password file
-    PASSWORDS = read_from_file("stored_passwords.txt")
+    PASSWORDS = read_from_shelf("stored_passwords")
     if account_name in PASSWORDS:
         pyperclip.copy(PASSWORDS[account_name])
         print(f"Password for {account_name} copied to clipboard!")
@@ -166,7 +203,7 @@ def main():
     # Prompt user for account credentials if add password argument has been used
     if args.add_password:
         # Display the accounts available in the stored passwords
-        display_accounts()
+        # display_accounts()
         account = input("\nAccount name: ")
         password_length = int(input("Password length: "))
         password = generate_password(password_length)
@@ -194,7 +231,7 @@ def main():
     # Prompt user for account name if get password argument has been used
     if args.get_password:
         # Display the accounts available in the stored passwords
-        display_accounts()
+        # display_accounts()
         account = input("\nAccount name: ")
         get_password(account)
 
