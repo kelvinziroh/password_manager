@@ -7,49 +7,49 @@ import sys, pyperclip, argparse, ast, string, random, shelve
 
 # TODO: Switch from a plaintext file to a shelf file to persist the password data
 
-def read_from_file(file_name):
-    try:
-        # Get the file object and open it
-        password_file = open(file_name)
-
-        # Read the contents of the file object
-        # Convert dictionary string to dictionary object
-        return ast.literal_eval(password_file.read())
-    except FileNotFoundError:
-        # Create the file if it does not exist
-        password_file = open(file_name, "w")
-        password_file.write("{}")
-        password_file.close()
-
-        # Read the contents of the newly created file
-        password_file = open(file_name)
-        return ast.literal_eval(password_file.read())
-
-# def read_from_shelf(file_name):
+# def read_from_file(file_name):
 #     try:
-#         # Open the shelf file object
-#         password_file = shelve.open(file_name)
-#         # Get the passwords dictionary data
-#         password_dict = password_file['passwords']
-#         # close the shelf file
-#         password_file.close()
-#         # Return the password dictionary
-#         return password_dict
-#     except KeyError:
-#         # Create an empty dictionary
-#         new_dict = {}
-#         # Open the shelf file object
-#         password_file = shelve.open(file_name)
-#         # Assisgn the empty dictionary to the password file
-#         password_file['passwords'] = new_dict
-#         # Get the passwords dictionary data
-#         password_dict = password_file['passwords']
-#         # Close the shelf file
-#         password_file.close()
-#         # Return the password dictionary
-#         return password_dict
+#         # Get the file object and open it
+#         password_file = open(file_name)
 
-# def write_to_file(file_name, passwords_dict):
+#         # Read the contents of the file object
+#         # Convert dictionary string to dictionary object
+#         return ast.literal_eval(password_file.read())
+#     except FileNotFoundError:
+#         # Create the file if it does not exist
+#         password_file = open(file_name, "w")
+#         password_file.write("{}")
+#         password_file.close()
+
+#         # Read the contents of the newly created file
+#         password_file = open(file_name)
+#         return ast.literal_eval(password_file.read())
+
+def read_from_shelf(file_name):
+    try:
+        # Open the shelf file object
+        password_file = shelve.open(file_name)
+        # Get the passwords dictionary data
+        password_dict = password_file['passwords']
+        # close the shelf file
+        password_file.close()
+        # Return the password dictionary
+        return password_dict
+    except KeyError:
+        # Create an empty dictionary
+        new_dict = {}
+        # Open the shelf file object
+        password_file = shelve.open(file_name)
+        # Assisgn the empty dictionary to the password file
+        password_file['passwords'] = new_dict
+        # Get the passwords dictionary data
+        password_dict = password_file['passwords']
+        # Close the shelf file
+        password_file.close()
+        # Return the password dictionary
+        return password_dict
+
+# def write_to_shelf(file_name, passwords_dict):
 #     # Overwrite password file contents
 #     stored_passwords = open(file_name, "w")
 #     stored_passwords.write(str(passwords_dict))
@@ -110,7 +110,7 @@ def generate_password(password_length):
 # Add account to the password manager if it does not exist
 # def add_password(account_name, password):
 #     # Get passwords from password file
-#     PASSWORDS = read_from_file("stored_passwords.txt")
+#     PASSWORDS = read_from_shelf("stored_passwords.txt")
 
 #     if account_name in PASSWORDS:
 #         print(f"{account_name} already exists in the password manager.")
@@ -118,30 +118,30 @@ def generate_password(password_length):
 #         PASSWORDS[account_name] = password
 
 #         # Overwrite password file contents
-#         write_to_file("stored_passwords.txt", PASSWORDS)
+#         write_to_shelf("stored_passwords.txt", PASSWORDS)
 
 #         # Alert user that password has successfully been added
 #         print(f"Password for {account_name} successfully added!")
 
 def add_password(account_name, password):
+    # Get the passwords dictionary from the shelf file
+    PASSWORDS = read_from_shelf("stored_passwords")
     # Specify the data to be persisted
-    PASSWORDS = {account_name: password}
-
+    PASSWORDS[account_name] = password
     # persist the data to the shelf file
-    write_to_file('stored_passwords', PASSWORDS)
-
+    write_to_shelf('stored_passwords', PASSWORDS)
     # Alert user of successful password addition
     print(f"Password for {account_name} successfully added!")
 
 # Edit account in the password manager if it exists
 def edit_password(account_name, password):
     # Get passwords from password file
-    PASSWORDS = read_from_file("stored_passwords.txt")
+    PASSWORDS = read_from_shelf("stored_passwords.txt")
     if account_name in PASSWORDS:
         PASSWORDS[account_name] = password
 
         # Overwrite password file contents
-        write_to_file("stored_passwords.txt", PASSWORDS)
+        write_to_shelf("stored_passwords.txt", PASSWORDS)
 
         # Alert user that password has successfully been updated
         print(f"Password for {account_name} successfuly updated!")
@@ -152,12 +152,12 @@ def edit_password(account_name, password):
 # Delete account in the password manager if it exists
 def del_password(account_name):
     # Get passwords from password file
-    PASSWORDS = read_from_file("stored_passwords.txt")
+    PASSWORDS = read_from_shelf("stored_passwords.txt")
     if account_name in PASSWORDS:
         del PASSWORDS[account_name]
 
         # Overwrite password file contents
-        write_to_file("stored_passwords.txt", PASSWORDS)
+        write_to_shelf("stored_passwords.txt", PASSWORDS)
 
         # Alert user that password has successfully been deleted
         print(f"Credentials for {account_name} successfully deleted!\n")
@@ -184,7 +184,7 @@ def display_accounts():
     print(message.center(len(message) + 20))
     print("=" * (len(message) + 20))
     # Get passwords from the password file
-    PASSWORDS = read_from_file("stored_passwords.txt")
+    PASSWORDS = read_from_shelf("stored_passwords.txt")
     for account in PASSWORDS.keys():
         print(f"- {account}")
 
