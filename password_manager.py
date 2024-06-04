@@ -165,36 +165,48 @@ def main():
     if args.add_password:
         # Display the accounts available in the stored passwords
         display_accounts()
-        account = input("\nAccount name: ")
-        password_length = int(input("Password length: "))
-        password = generate_password(password_length)
-        add_password(account, password)
+        try:
+            account = input("\nAccount name: ")
+            password_length = int(input("Password length: "))
+            password = generate_password(password_length)
+            add_password(account, password)
+        except KeyboardInterrupt:
+            sys.exit("\nPassword creation successfully cancelled!")
 
     # Prompt user for updated credentials if edit password argument has been used
     if args.edit_password:
         # Display the accounts available in the stored passwords
         display_accounts()
-        account = input("\nAccount name: ")
-        password_length = int(input("Password length: "))
-        password = generate_password(password_length)
-        edit_password(account, password)
+        try:
+            account = input("\nAccount name: ")
+            password_length = int(input("Password length: "))
+            password = generate_password(password_length)
+            edit_password(account, password)
+        except KeyboardInterrupt:
+            sys.exit("\nPassword update successfully cancelled!")
 
     # Prompt user for account name if del password argument has been used
     if args.del_password:
         warning_message = "WARNING: You are about to permanently delete a record!"
         # Display the accounts available in the stored passwords
         display_accounts()
-        print(f"\n{warning_message}")
-        account = input("Account name: ")
-        del_password(account)
-        display_accounts()
+        try:
+            print(f"\n{warning_message}")
+            account = input("Account name: ")
+            del_password(account)
+            display_accounts()
+        except KeyboardInterrupt:
+            sys.exit("\nPassword deletion successfully cancelled!")
 
     # Prompt user for account name if get password argument has been used
     if args.get_password:
         # Display the accounts available in the stored passwords
         display_accounts()
-        account = input("\nAccount name: ")
-        get_password(account)
+        try:
+            account = input("\nAccount name: ")
+            get_password(account)
+        except KeyboardInterrupt:
+            sys.exit("\nPassword retrieval successfully cancelled!")
 
 
 if __name__ == "__main__":
