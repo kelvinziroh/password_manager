@@ -1,4 +1,4 @@
-import pytest, project, string, argparse
+import pytest, project, string
 
 # Test password lengths
 @pytest.mark.parametrize("password_length", [8, 12, 16])
@@ -36,3 +36,11 @@ def test_get_arguments_del_password():
     assert args.edit_password is False
     assert args.del_password is True
     assert args.get_password is False
+
+# Test the --get-password argument from get_arguments()
+def test_get_arguments_get_password():
+    args = project.get_arguments("--get-password".split())
+    assert args.add_password is False
+    assert args.edit_password is False
+    assert args.del_password is False
+    assert args.get_password is True
