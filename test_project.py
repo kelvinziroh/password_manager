@@ -20,3 +20,11 @@ def test_get_arguments_add_password():
     assert args.edit_password is False
     assert args.del_password is False
     assert args.get_password is False
+
+# Test the --edit-password argument from get_arguments()
+def test_get_arguments_edit_password():
+    args = project.get_arguments("--edit-password".split())
+    assert args.add_password is False
+    assert args.edit_password is True
+    assert args.del_password is False
+    assert args.get_password is False
