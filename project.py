@@ -38,7 +38,17 @@ def write_to_shelf(file_name, passwords_dict):
 
 
 # Create an argument parser
-def get_arguments():
+def get_arguments(args=None):
+    """
+    Define and parse arguments typed in by the user to determine the program's
+    functionality during runtime
+
+    Args:
+    args: Optional, list of strings to parse as arguments during unit tests
+
+    Returns:
+    Parsed arguments
+    """
     parser = argparse.ArgumentParser(
         description="Manage passwords for different accounts"
     )
@@ -72,7 +82,7 @@ def get_arguments():
         help="Copy the password for the corresponding account in the manager",
     )
 
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 # Generate random passwords
