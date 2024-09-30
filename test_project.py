@@ -1,10 +1,21 @@
+# Import the necessary modules
 import pytest, project, string
 
+
+# Test the read_from_shelf() function
+@pytest.mark.parametrize("file_name", ["stored_passwords"])
+def test_read_from_shelf(file_name):
+    passwords = project.read_from_shelf(file_name)
+    assert isinstance(passwords, dict)
+
+
+# Test the generate_password() function
 # Test password lengths
 @pytest.mark.parametrize("password_length", [8, 12, 16])
 def test_generate_password_length(password_length):
     password = project.generate_password(password_length)
     assert len(password) == password_length
+
 
 # Test password characters
 def test_generate_password_characters():
@@ -13,6 +24,8 @@ def test_generate_password_characters():
     assert any(char in string.digits for char in password)
     assert any(char in string.punctuation for char in password)
 
+
+# Test the get_arguments() function
 # Test the --add-password argument from get_arguments()
 def test_get_arguments_add_password():
     args = project.get_arguments("--add-password".split())
@@ -20,6 +33,7 @@ def test_get_arguments_add_password():
     assert args.edit_password is False
     assert args.del_password is False
     assert args.get_password is False
+
 
 # Test the --edit-password argument from get_arguments()
 def test_get_arguments_edit_password():
@@ -29,6 +43,7 @@ def test_get_arguments_edit_password():
     assert args.del_password is False
     assert args.get_password is False
 
+
 # Test the --del-password argument from get_arguments()
 def test_get_arguments_del_password():
     args = project.get_arguments("--del-password".split())
@@ -36,6 +51,7 @@ def test_get_arguments_del_password():
     assert args.edit_password is False
     assert args.del_password is True
     assert args.get_password is False
+
 
 # Test the --get-password argument from get_arguments()
 def test_get_arguments_get_password():
