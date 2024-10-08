@@ -1,11 +1,96 @@
 #! python3
-# password_manager.py - A local command-line based password manager program
+# project.py - A local command-line based password manager program
 
 # Import necessary modules
-import sys, pyperclip, argparse, string, random, shelve, re
+import sys
+import pyperclip
+import argparse
+import string
+import random
+import shelve
+import re
+
+
+def main():
+    # Parse the arguments
+    args = get_arguments()
+
+    # Alert user incase of invalid command line arguments
+    if len(sys.argv) < 2:
+        print("Usage: python password_manager.py [--option]")
+        sys.exit()
+
+    # Prompt user for account credentials if add password argument has been used
+    if args.add_password:
+        # Display the accounts available in the stored passwords
+        display_accounts()
+        try:
+            account = input("\nAccount name: ")
+            password_length = int(input("Password length: "))
+            # Keep prompting the user for a password length if the input length was less than 8
+            while password_length < 8:
+                print(
+                    "For added security, a password of at least 8 characters is recommended!"
+                )
+                password_length = int(input("Password length: "))
+            password = generate_password(password_length)
+            add_password(account, password)
+        except KeyboardInterrupt:
+            sys.exit("\nPassword creation successfully cancelled!")
+
+    # Prompt user for updated credentials if edit password argument has been used
+    if args.edit_password:
+        # Display the accounts available in the stored passwords
+        display_accounts()
+        try:
+            account = input("\nAccount name: ")
+            password_length = int(input("Password length: "))
+            # Keep prompting the user for a password length if the input length was less than 8
+            while password_length < 8:
+                print(
+                    "For added security, a password of at least 8 characters is recommended!"
+                )
+                password_length = int(input("Password length: "))
+            password = generate_password(password_length)
+            edit_password(account, password)
+        except KeyboardInterrupt:
+            sys.exit("\nPassword update successfully cancelled!")
+
+    # Prompt user for account name if del password argument has been used
+    if args.del_password:
+        warning_message = "WARNING: You are about to permanently delete a record!"
+        # Display the accounts available in the stored passwords
+        display_accounts()
+        try:
+            print(f"\n{warning_message}")
+            account = input("Account name: ")
+            del_password(account)
+            display_accounts()
+        except KeyboardInterrupt:
+            sys.exit("\nPassword deletion successfully cancelled!")
+
+    # Prompt user for account name if get password argument has been used
+    if args.get_password:
+        # Display the accounts available in the stored passwords
+        display_accounts()
+        try:
+            account = input("\nAccount name: ")
+            get_password(account)
+        except KeyboardInterrupt:
+            sys.exit("\nPassword retrieval successfully cancelled!")
 
 
 def read_from_shelf(file_name):
+    """
+    Get the data from the shelve file.
+
+    Args:
+        string: The name of the shelve file with password data.
+
+    Returns:
+        dict: A dictionary of key-value pairs representing accounts
+        and their respective passwords.
+    """
     try:
         # Open the shelf file object
         password_file = shelve.open(file_name)
@@ -31,23 +116,32 @@ def read_from_shelf(file_name):
 
 
 def write_to_shelf(file_name, passwords_dict):
+    """
+    Persist the password data into the shelve file
+
+    Args:
+        string: The name of the shelve file with password data
+        dict: The updated dictionary of key-value pairs representing
+        accounts and their respective passwords
+    Returns:
+        None
+    """
     # retrieve passwords from the shelf file
     stored_passwords = shelve.open(file_name)
     stored_passwords["passwords"] = passwords_dict
     stored_passwords.close()
 
 
-# Create an argument parser
 def get_arguments(args=None):
     """
     Define and parse arguments typed in by the user to determine the program's
     functionality during runtime
 
     Args:
-    args: Optional, list of strings to parse as arguments during unit tests
+        args: Optional, list of strings to parse as arguments during unit tests
 
     Returns:
-    Parsed arguments
+        obj: Parsed arguments
     """
     parser = argparse.ArgumentParser(
         description="Manage passwords for different accounts"
@@ -84,6 +178,7 @@ def get_arguments(args=None):
 
     return parser.parse_args(args)
 
+
 def check_password_strength(password):
     """
     Check if a password contains at least one occurrence of each character type.
@@ -97,12 +192,21 @@ def check_password_strength(password):
     conditions = [
         re.search(r"[" + string.ascii_letters + "]", password),
         re.search(r"[" + string.digits + "]", password),
-        re.search(r"[" + string.punctuation + "]", password)
+        re.search(r"[" + string.punctuation + "]", password),
     ]
     return all(conditions)
 
-# Generate random passwords
+
 def generate_password(password_length):
+    """
+    Generate a password from a random selection of characters
+
+    Args:
+        int: The length of the password to be generated
+
+    Returns:
+        string: The randomly generated password
+    """
     characters = string.ascii_letters + string.digits + string.punctuation
     # Generate an initial password
     password = "".join(random.choice(characters) for _ in range(password_length))
@@ -113,6 +217,15 @@ def generate_password(password_length):
 
 
 def add_password(account_name, password):
+    """
+    Add an account and its respective password to the dictionary
+
+    Args:
+        string: The account whose password the user wants to store
+        string: The generated password respective to the account
+    Returns:
+        None
+    """
     # Get the passwords dictionary from the shelf file
     PASSWORDS = read_from_shelf("stored_passwords")
     # Specify the data to be persisted
@@ -123,8 +236,16 @@ def add_password(account_name, password):
     print(f"Password for {account_name} successfully added!")
 
 
-# Edit account in the password manager if it exists
 def edit_password(account_name, password):
+    """
+    Edit an account's password in the dictionary
+
+    Args:
+        string: The account whose password the user wants to edit
+        string: The generated password respective to the account
+    Returns:
+        None
+    """
     # Get passwords from password file
     PASSWORDS = read_from_shelf("stored_passwords")
     if account_name in PASSWORDS:
@@ -139,8 +260,15 @@ def edit_password(account_name, password):
         print(f"{account_name} does not exist in the password manager.")
 
 
-# Delete account in the password manager if it exists
 def del_password(account_name):
+    """
+    Delete an account and its respective password from the dictionary.
+
+    Args:
+        string: The account whose password the user wants to delete
+    Returns:
+        None
+    """
     # Get passwords from password file
     PASSWORDS = read_from_shelf("stored_passwords")
     if account_name in PASSWORDS:
@@ -155,8 +283,16 @@ def del_password(account_name):
         print(f"{account_name} does not exist in the password manager.")
 
 
-# Copy account's password if it exists in the password manager
 def get_password(account_name):
+    """
+    Retrieve and copy an account's password from the dictionary to
+    the clipboard.
+
+    Args:
+        string: The account whose password the user wants to store
+    Returns:
+        None
+    """
     # Get passwords from password file
     PASSWORDS = read_from_shelf("stored_passwords")
     if account_name in PASSWORDS:
@@ -168,6 +304,9 @@ def get_password(account_name):
 
 # Display the account names in the stored passwords file
 def display_accounts():
+    """
+    Display the accounts that exist in the shelve file.
+    """
     # Display a message
     message = "Stored Account passwords"
     print("=" * (len(message) + 20))
@@ -177,73 +316,6 @@ def display_accounts():
     PASSWORDS = read_from_shelf("stored_passwords")
     for account in PASSWORDS.keys():
         print(f"- {account}")
-
-
-def main():
-    # Parse the arguments
-    args = get_arguments()
-
-    # Alert user incase of invalid command line arguments
-    if len(sys.argv) < 2:
-        print(
-            "Usage: python password_manager.py [--option] - Generate, add, edit and delete passwords to accounts"
-        )
-        sys.exit()
-
-    # Prompt user for account credentials if add password argument has been used
-    if args.add_password:
-        # Display the accounts available in the stored passwords
-        display_accounts()
-        try:
-            account = input("\nAccount name: ")
-            password_length = int(input("Password length: "))
-            # Keep prompting the user for a password length if the input length was less than 8
-            while password_length < 8:
-                print("For added security, a password of at least 8 characters is recommended!")
-                password_length = int(input("Password length: "))
-            password = generate_password(password_length)
-            add_password(account, password)
-        except KeyboardInterrupt:
-            sys.exit("\nPassword creation successfully cancelled!")
-
-    # Prompt user for updated credentials if edit password argument has been used
-    if args.edit_password:
-        # Display the accounts available in the stored passwords
-        display_accounts()
-        try:
-            account = input("\nAccount name: ")
-            password_length = int(input("Password length: "))
-            # Keep prompting the user for a password length if the input length was less than 8
-            while password_length < 8:
-                print("For added security, a password of at least 8 characters is recommended!")
-                password_length = int(input("Password length: "))
-            password = generate_password(password_length)
-            edit_password(account, password)
-        except KeyboardInterrupt:
-            sys.exit("\nPassword update successfully cancelled!")
-
-    # Prompt user for account name if del password argument has been used
-    if args.del_password:
-        warning_message = "WARNING: You are about to permanently delete a record!"
-        # Display the accounts available in the stored passwords
-        display_accounts()
-        try:
-            print(f"\n{warning_message}")
-            account = input("Account name: ")
-            del_password(account)
-            display_accounts()
-        except KeyboardInterrupt:
-            sys.exit("\nPassword deletion successfully cancelled!")
-
-    # Prompt user for account name if get password argument has been used
-    if args.get_password:
-        # Display the accounts available in the stored passwords
-        display_accounts()
-        try:
-            account = input("\nAccount name: ")
-            get_password(account)
-        except KeyboardInterrupt:
-            sys.exit("\nPassword retrieval successfully cancelled!")
 
 
 if __name__ == "__main__":
