@@ -2,6 +2,14 @@
 import pytest, project, string
 
 
+# Test the check_password_strength() function
+def test_check_password_strength():
+    assert project.check_password_strength("MyStrongPassword123!") == True
+    assert project.check_password_strength("MyStrongPassword123") == False
+    assert project.check_password_strength("123!") == False
+    assert project.check_password_strength("MyStrongPassword") == False
+
+
 # Test the read_from_shelf() function
 @pytest.mark.parametrize("file_name", ["stored_passwords"])
 def test_read_from_shelf(file_name):
