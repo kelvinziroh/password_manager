@@ -2,7 +2,7 @@
 # password_manager.py - A local command-line based password manager program
 
 # Import necessary modules
-import sys, pyperclip, argparse, string, random, shelve
+import sys, pyperclip, argparse, string, random, shelve, re
 
 
 def read_from_shelf(file_name):
@@ -84,12 +84,31 @@ def get_arguments(args=None):
 
     return parser.parse_args(args)
 
+def check_password_strength(password):
+    """
+    Check if a password contains at least one occurrence of each character type.
+
+    Args:
+        string: The generated password which will be checked
+
+    Returns:
+        boolean: True if all conditions are satisfied and False otherwise.
+    """
+    conditions = [
+        re.search(r"[" + string.ascii_letters + "]", password),
+        re.search(r"[" + string.digits + "]", password),
+        re.search(r"[" + string.punctuation + "]", password)
+    ]
+    return all(conditions)
 
 # Generate random passwords
 def generate_password(password_length):
     characters = string.ascii_letters + string.digits + string.punctuation
-    # Randomly select characters to construct the password
+    # Generate an initial password
     password = "".join(random.choice(characters) for _ in range(password_length))
+    # Regenerate a password until it contains at least one occurrence of each character type
+    while not check_password_strength(password):
+        password = "".join(random.choice(characters) for _ in range(password_length))
     return password
 
 
