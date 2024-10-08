@@ -178,6 +178,10 @@ def main():
         try:
             account = input("\nAccount name: ")
             password_length = int(input("Password length: "))
+            # Keep prompting the user for a password length if the input length was less than 8
+            while password_length < 8:
+                print("For added security, a password of at least 8 characters is recommended!")
+                password_length = int(input("Password length: "))
             password = generate_password(password_length)
             add_password(account, password)
         except KeyboardInterrupt:
@@ -190,6 +194,10 @@ def main():
         try:
             account = input("\nAccount name: ")
             password_length = int(input("Password length: "))
+            # Keep prompting the user for a password length if the input length was less than 8
+            while password_length < 8:
+                print("For added security, a password of at least 8 characters is recommended!")
+                password_length = int(input("Password length: "))
             password = generate_password(password_length)
             edit_password(account, password)
         except KeyboardInterrupt:
