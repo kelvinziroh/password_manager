@@ -1,8 +1,4 @@
 # Password Manager
-### Video Demo: click [here]()
-
-
-### Description
 Add, retrieve, edit and delete passwords to different accounts from a linux command line interface.
 
 ## Acknowledgements
@@ -10,10 +6,10 @@ This project was undertaken in partial fulfillment of the requirements on [CS50â
 
 
 ## Project Files
-- `project.py`
+- `password_manager.py`
     1. Imports necessary modules required for the program to run successfully. 
-    2. It then implements the password management functionality using the main and helper functions. The helper functions modularize specific steps to be taken when the program runs and implement the necessary password functionality. The main function simply checks the command-line arguments passed when the program is run on the terminal and calls the appropriate helper functions based on the command-line argument captured. 
-- `test_project.py`
+    2. It then implements the password management functionality using the main and helper functions. The helper functions modularize specific steps to be taken when the program runs and implement the appropriate password management functionality. The main function simply checks the command-line arguments passed when the program is run on the terminal and calls the appropriate helper functions based on the command-line argument captured. 
+- `test_password_manager.py`
     1. Imports the **pytest** framework, the project module along with any other necessary libraries for the tests to run successfully.
     2. Runs tests to some of the helper functions defined in the main project module to ensure they run as required.
 - `README.md` - Contains documentation on how to the program works and how to use it.
@@ -61,11 +57,6 @@ You should have the project files downloaded to the current working directory. Y
 Also feel free to delete the `.git` repository which will track changes made to the `stored_passwords.db` shelve file as you write data into it while creating and updating passwords into the shelve file. Just run the following command to do so:
 ```
 rm -rf .git
-```
-
-Due to the requirements of the project's submission, the script with the main password management functionality is named `project.py`. However to follow along with the tutorial below on how to use the program, feel free to rename the file to `password_manager.py` by running the following command:
-```
-mv project.py password_manager.py
 ```
 
 To **add** a password of a specified account, run the following command:
