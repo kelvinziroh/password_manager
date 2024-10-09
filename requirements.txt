@@ -1,0 +1,11 @@
+Python==3.11.8
+black==24.2.0
+click==8.1.7
+iniconfig==2.0.0
+mypy-extensions==1.0.0
+packaging==24.0
+pathspec==0.12.1
+platformdirs==4.2.0
+pluggy==1.5.0
+pyperclip==1.8.2
+pytest==8.3.3
