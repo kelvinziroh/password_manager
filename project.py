@@ -228,12 +228,16 @@ def add_password(account_name, password):
     """
     # Get the passwords dictionary from the shelf file
     PASSWORDS = read_from_shelf("stored_passwords")
-    # Specify the data to be persisted
-    PASSWORDS[account_name] = password
-    # persist the data to the shelf file
-    write_to_shelf("stored_passwords", PASSWORDS)
-    # Alert user of successful password addition
-    print(f"Password for {account_name} successfully added!")
+    # Check if the account name does not exist
+    if account_name not in PASSWORDS:
+        # Specify the data to be persisted
+        PASSWORDS[account_name] = password
+        # persist the data to the shelf file
+        write_to_shelf("stored_passwords", PASSWORDS)
+        # Alert user of successful password addition
+        print(f"Password for {account_name} successfully added!")
+    else:
+        print(f"{account_name}, already exists in the password manager.")
 
 
 def edit_password(account_name, password):
